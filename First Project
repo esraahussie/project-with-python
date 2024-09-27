@@ -1,0 +1,133 @@
+# Esraa Hussien Mohamed 
+
+def check(string):
+    b = set(string)
+    s = {'0', '1'}
+    return s == b or b == {'0'} or b == {'1'}
+
+def one_comp(S):
+    L = list(S)
+    for x in range(len(L)):
+        if L[x] == '0':
+            L[x] = '1'
+        elif L[x] == '1':
+            L[x] = '0'
+    print("".join(L))
+
+def two_comp(S):
+    L = list(S)
+    for x in range(len(L)):
+        if L[x] == '0':
+            L[x] = '1'
+        elif L[x] == '1':
+            L[x] = '0'
+
+    for i in range(len(L) - 1, -1, -1):
+        if L[i] == '0':
+            L[i] = '1'
+            break
+        else:
+            L[i] = '0'
+    print("".join(L))
+
+def add(a, b):
+    a = a[::-1]
+    b = b[::-1]
+    if len(a) < len(b):
+        a += '0' * (len(b) - len(a))
+    elif len(b) < len(a):
+        b += '0' * (len(a) - len(b))
+
+    result = ''
+    carry = 0
+    for i in range(len(a)):
+        bit_sum = int(a[i]) + int(b[i]) + carry
+        result += str(bit_sum % 2)
+        carry = bit_sum // 2
+
+    if carry:
+        result += str(carry)
+
+    print(result[::-1])
+
+def subtract(a, b):
+    a = a[::-1]
+    b = b[::-1]
+    max_length = max(len(a), len(b))
+    if len(a) < max_length:
+        a += '0' * (max_length - len(a))
+    elif len(b) < max_length:
+        b += '0' * (max_length - len(b))
+
+    result = ''
+    borrow = 0
+    for i in range(len(a)):
+        bit_diff = int(a[i]) - int(b[i]) - borrow
+
+        if bit_diff < 0:
+            bit_diff += 2
+            borrow = 1
+        else:
+            borrow = 0
+
+        result += str(bit_diff)
+
+    result = result.rstrip('0')
+    if len(result) == 0:
+        result = '0'
+
+    print(result[::-1])
+
+while True:
+    print("**Binary Calculator**\n")
+    choice = "INVALID"
+    while choice not in {"A", "B"}:
+        choice = input("A) Insert Numbers\nB) Exit\n")
+        if choice == "A":
+            number = "INVALID"
+            while not check(number):
+                number = input("Insert a binary number\n")
+                if not check(number):
+                    print("Please enter a valid binary number")
+            while True:
+                print("**Please select the operation\n")
+                print("A) Compute one's complement\n")
+                print("B) Compute two's complement\n")
+                print("C) Addition\n")
+                print("D) Subtraction\n")
+
+                valid_operations = {'A', 'B', 'C', 'D'}
+                op = input().upper()
+
+                if op not in valid_operations:
+                    print("Please enter a valid choice (A/B/C/D)")
+                    continue
+
+                if op == "A":
+                    one_comp(number)
+                elif op == "B":
+                    two_comp(number)
+                elif op == "C":
+                    otherNumber = "INVALID"
+                    while not check(otherNumber):
+                        otherNumber = input("Please insert the second number\n")
+                        if not check(otherNumber):
+                            print("Please enter a valid binary number")
+                    print("Addition is: ")
+                    add(number, otherNumber)
+                    print("\n")
+                    break
+                elif op == "D":
+                    otherNumber = "INVALID"
+                    while not check(otherNumber):
+                        otherNumber = input("Please insert the second number\n")
+                        if not check(otherNumber):
+                            print("Please enter a valid binary number")
+                    print("Subtraction is: ")
+                    subtract(number, otherNumber)
+                    print("\n")
+                    break
+        elif choice == "B":
+            exit()
+
+
